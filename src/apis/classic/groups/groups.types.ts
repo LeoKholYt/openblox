@@ -1,4 +1,5 @@
 import type { Identifier, ISODateTime, ObjectPrettify, UnionPrettify, ObjectKeysToCamelCase } from "typeforge"
+import { ChallengeMetadata, ChallengeType, RawChallengeMetadataBase } from "../challenge";
 
 
 type UrlProtocol = `http${"s" | ""}://`;
@@ -439,6 +440,21 @@ export type RawGroupJoinRequests = ObjectPrettify<{
 export type PrettifiedGroupJoinRequests = GroupJoinRequest<Identifier, Date>[]
 // -------------------------------------------------------------------------------------------------------------------
 
+
+export type GroupPayoutCustomHeaders = {
+  'rblx-challenge-id'?: string,
+  'rblx-challenge-metadata'?: ChallengeMetadata | {},
+  'rblx-challenge-type'?: ChallengeType
+}
+
+export type GroupPayoutChallengeMetadata = RawChallengeMetadataBase & {
+  contentInlineBase64: string,
+  expectedSymbols: Array<unknown>, // TODO
+  identifiersToFetch: Array<unknown> // TODO
+  scriptIdentifiers: Array<string>
+  browserTrackerId?: Identifier,
+  bodyTranslationKey?: string
+}
 
 // GET /v1/groups/{groupId}/join-requests ----------------------------------------------------------------------------
 export type RawGroupJoinRequestForUser<UserId extends Identifier> = GroupJoinRequest<UserId, ISODateTime> | {}
