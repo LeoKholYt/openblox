@@ -796,6 +796,44 @@ export const groupPayoutsInfo = createApiMethod(async (
 
   formatRawDataFn: ({ data }) => data
 }))
+
+/**
+ * Payout
+ * @category Revenue
+ * @endpoint POST /v1/groups/{groupId}/payouts
+ * 
+ * @param groupId The id of the group to payout from.
+ * @param recipients 
+ * @param payoutType
+ * @param customHeaders
+ * 
+ * @example 
+ * @exampleData true
+ * @exampleRawBody {}
+ */
+export const groupPayout = createApiMethod(async <UserId extends Identifier>(
+  { groupId, recipients, payoutType = "FixedAmount", customHeaders }: { 
+    groupId: Identifier,
+    recipients: ArrayNonEmptyIfConst<{ recipientId: UserId, recipientType: "User", amount: number }>,
+    payoutType?: "FixedAmount" | "Percentage",
+    customHeaders?: {
+      'rblx-challenge-id'?: string,
+      'rblx-challenge-metadata'?: string,
+      'rblx-challenge-type'?: string
+    }
+  }
+): ApiMethod<{}, boolean> => ({
+  method: "POST",
+  path: `/v1/groups/${groupId}/payouts`,
+  body: { 
+    PayoutType: payoutType,
+    Recipients: recipients
+  },
+  headers: customHeaders,
+  name: "groupPayout",
+  
+  formatRawDataFn: (rawData) => dataIsSuccess(rawData),
+}))
 //////////////////////////////////////////////////////////////////////////////////
 
 
