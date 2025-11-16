@@ -2,12 +2,13 @@ import { Identifier } from "typeforge";
 
 export type ChallengeActionType = "Generic"
 export type ChallengeType = "twostepverification" | "chef" | "";
-export type ChallengeMetadata = { 
-  challengeId: string,
-  actionType: ChallengeActionType,
-  rememberDevice: boolean,
-  verificationToken?: string,
-}
+export type ChallengeMetadata = {
+  challengeId: string;
+  actionType?: ChallengeActionType;
+  rememberDevice?: boolean;
+  userId?: Identifier;
+  verificationToken?: string;
+};
 
 export type RawChallengeMetadataBase = {
   challengeId: string,
@@ -22,7 +23,8 @@ export type RawChallengeMetadata = RawChallengeMetadataBase &{
   shouldShowRememberDeviceCheckbox: boolean,
   sessionCookie: string,
   requestPath: string,
-  requestMethod: string
+  requestMethod: string,
+  bodyTranslationKey?: string
 }
 
 export type ChallengeSharedParameters = {
