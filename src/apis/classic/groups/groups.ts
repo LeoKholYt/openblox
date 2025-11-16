@@ -801,6 +801,7 @@ export const groupPayoutsInfo = createApiMethod(async (
  * Payout
  * @category Revenue
  * @endpoint POST /v1/groups/{groupId}/payouts
+ * @tags [ "Cookie" ]
  * 
  * @param groupId The id of the group to payout from.
  * @param recipients 
