@@ -15,12 +15,12 @@ const { createApiMethod } = createApiGroup({ name: "ClassicTwoStepVerification",
  * @param code The 2FA verification code.
  * @param actionType "Generic" by default
  * 
- * @example 
+ * @example const { data: verificationToken } = await ClassicTwoStepVerification.authenticatorVerify({ senderId, challengeId, code: generate2FACode() })
  * @exampleData "xvXfi6QL2ES02y8OrnmtGw"
  * @exampleRawBody { "verificationToken": "xvXfi6QL2ES02y8OrnmtGw" }
  */
 export const authenticatorVerify = createApiMethod(async <UserId extends Identifier>(
-  { senderId, challengeId, code, actionType = "Generic" }: { senderId: UserId, challengeId: string, code: string, actionType: "Generic" }
+  { senderId, challengeId, code, actionType = "Generic" }: { senderId: UserId, challengeId: string, code: string, actionType?: "Generic" }
 ): ApiMethod<RawAuthenticatorVerifyData, string> => ({
   method: "POST",
   path: `/v1/users/${senderId}/challenges/authenticator/verify`,
