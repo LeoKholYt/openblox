@@ -182,3 +182,4 @@ bun.lockb
 docs_site/
 
 /graph.png
+.npmrc

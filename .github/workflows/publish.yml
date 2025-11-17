@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: '20.x'
           registry-url: 'https://npm.pkg.github.com'
-          scope: '@leokhol'
+          scope: '@leokholyt'
       - name: Install dependencies
         run: npm install
       - name: Publish package
