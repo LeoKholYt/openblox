@@ -1,15 +1,15 @@
 {
-  "name": "openblox",
+  "name": "@leokhol/openblox",
   "description": "Roblox API Wrapper For Both Classic And OpenCloud APIs.",
   "type": "commonjs",
   "version": "1.0.62",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/MightyPart/openblox/issues"
+    "url": "https://github.com/LeoKholYt/openblox/issues"
   },
   "repository": {
     "type": "github",
-    "url": "https://github.com/MightyPart/openblox",
+    "url": "https://github.com/LeoKholYt/openblox",
     "directory": "main"
   },
   "keywords": [
@@ -107,12 +107,15 @@
     "typeforge": "^0.0.23"
   },
   "scripts": {
-    "build:code": "bun run ./build.ts && tsc --emitDeclarationOnly",
+    "build:code": "node ./build.js && tsc --emitDeclarationOnly",
     "build:docs": "bun run ./docs/buildDocs.ts",
     "graph": "madge --image graph.png ./src/**/*",
     "graph:circular": "madge --image graph.png --circular ./src/**/*",
     "graph:dist": "madge --image graph.png ./dist/**/*",
     "graph:dist:circular": "madge --image graph.png --circular ./dist/**/*",
-    "build": "bun run build:docs && bun run build:code"
-  }
+    "build": "bun run build:docs && node ./build.js && tsc --emitDeclarationOnly",
+    "watch": "node ./build.js --watch",
+    "prepare": "node ./build.js && tsc --emitDeclarationOnly"
+  },
+  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }

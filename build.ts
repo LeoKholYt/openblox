@@ -2,7 +2,11 @@ import * as esbuild from 'esbuild';
 import { globby } from 'globby';
 import { rm } from "node:fs/promises";
 
-await rm('dist', { recursive: true, force: true })
+const isWatch = process.argv.includes('--watch');
+
+if (!isWatch) {
+  await rm('dist', { recursive: true, force: true })
+}
 const entryPoints = await globby(['src/**/*.{js,ts}']);
 
 const settings = {
@@ -15,4 +19,12 @@ const settings = {
   target: ['node18', 'node16', 'node20', 'node22']
 } satisfies esbuild.BuildOptions
 
-await esbuild.build(settings);
+if (isWatch) {
+  console.log('Starting watch mode...');
+  const ctx = await esbuild.context(settings);
+  await ctx.watch();
+  console.log('Watching for changes...');
+} else {
+  await esbuild.build(settings);
+  console.log('Build completed');
+}

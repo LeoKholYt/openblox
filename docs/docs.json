@@ -676,6 +676,27 @@
           }
         ]
       },
+      "groupRole": {
+        "description": "Gets information about a specific role for a group.",
+        "tags": {
+          "endpoint": "GET /v2/groups/{groupId}/roles/{roleId}",
+          "example": "const { data: role } = await GroupsApi.groupRole({ groupId: 5850082, roleId: 48715304 });",
+          "exampleData": "",
+          "exampleRawBody": ""
+        },
+        "params": [
+          {
+            "name": "groupId",
+            "type": "GroupId",
+            "description": "The id of the group to get the role information from."
+          },
+          {
+            "name": "roleId",
+            "type": "RoleId",
+            "description": "The id of the role to get information about."
+          }
+        ]
+      },
       "groupShout": {
         "description": "Gets roles for a group.",
         "tags": {
@@ -772,6 +793,32 @@
             "name": "userId",
             "type": "Identifier",
             "description": "The id of the user to decline from the group."
+          }
+        ]
+      },
+      "updateGroupMemberRole": {
+        "description": "Updates the group membership for a particular group member. This action requires the requester to be able to manage lower ranked members. Guest or Owner ranks cannot be assigned, and a requester cannot change their own rank.",
+        "tags": {
+          "endpoint": "PATCH /v2/groups/{groupId}/memberships/{userId}",
+          "example": "const { data: success } = await GroupsApi.updateGroupMemberRole({\n  groupId: 5850082,\n  userId: 2655994471,\n  roleId: 41112469,\n});",
+          "exampleData": "{\n  path: \"groups/5850082/memberships/MTU5OTk0MDk4NQ\",\n  createTime: \"2020-04-30T10:28:57.147Z\",\n  updateTime: \"2025-05-17T16:26:10.879549500Z\",\n  user: \"users/1599940985\",\n  role: \"groups/5850082/roles/41112469\",\n}\n",
+          "exampleRawBody": "{\n  path: \"groups/5850082/memberships/MTU5OTk0MDk4NQ\",\n  createTime: \"2020-04-30T10:28:57.147Z\",\n  updateTime: \"2025-05-17T16:26:10.879549500Z\",\n  user: \"users/1599940985\",\n  role: \"groups/5850082/roles/41112469\",\n}\n"
+        },
+        "params": [
+          {
+            "name": "groupId",
+            "type": "GroupId",
+            "description": "The id of the group to change a users role for."
+          },
+          {
+            "name": "userId",
+            "type": "Identifier",
+            "description": "The id of the user to change role for."
+          },
+          {
+            "name": "roleId",
+            "type": "RoleId",
+            "description": "The id of the role to update to."
           }
         ]
       }
@@ -3276,6 +3323,35 @@
             "name": "bundleIds",
             "type": "🤷",
             "description": "The IDs of the bundles to get info about."
+          }
+        ]
+      }
+    },
+    "challenge": {
+      "continueChallenge": {
+        "description": "Continue",
+        "tags": {
+          "category": "Continue",
+          "endpoint": "POST /v1/continue",
+          "example": "",
+          "exampleData": "",
+          "exampleRawBody": "{\n  challengeId: \"41af6d61-fd4c-4bd3-986d-45230e9c4057\",\n  challengeType: \"twostepverification\",\n  challengeMetadata: '{\"userId\":\"2819370426\", \"challengeId\":\"b94c9fb7-f623-4a4e-9f08-43620aae5250\", \"shouldShowRememberDeviceCheckbox\":false, \"rememberDevice\":false, \"sessionCookie\":\"\", \"verificationToken\":\"\", \"actionType\":\"Generic\", \"requestPath\":\"/v1/groups/{groupId}/payouts\", \"requestMethod\":\"POST\", \"sharedParameters\":{\"shouldAnalyze\":false, \"genericChallengeId\":\"\", \"useContinueMode\":false, \"renderNativeChallenge\":false, \"delayParameters\":null}}',\n}\n"
+        },
+        "params": [
+          {
+            "name": "challengeId",
+            "type": "string",
+            "description": "challengeId"
+          },
+          {
+            "name": "challengeMetadata",
+            "type": "ChallengeMetadata",
+            "description": "challengeMetadata"
+          },
+          {
+            "name": "challengeType",
+            "type": "ChallengeType",
+            "description": "challengeType"
           }
         ]
       }
@@ -6051,6 +6127,39 @@
           }
         ]
       },
+      "groupPayout": {
+        "description": "Payout",
+        "tags": {
+          "category": "Revenue",
+          "endpoint": "POST /v1/groups/{groupId}/payouts",
+          "tags": "[ \"Cookie\" ]",
+          "example": "",
+          "exampleData": "",
+          "exampleRawBody": "{}\n"
+        },
+        "params": [
+          {
+            "name": "groupId",
+            "type": "Identifier",
+            "description": "The id of the group to payout from."
+          },
+          {
+            "name": "recipients",
+            "type": "ArrayNonEmptyIfConst<{ recipientId: UserId, recipientType: \"User\", amount: number }>",
+            "description": "recipients"
+          },
+          {
+            "name": "payoutType?",
+            "type": "\"FixedAmount\" | \"Percentage\"",
+            "description": "payoutType"
+          },
+          {
+            "name": "customHeaders?",
+            "type": "GroupPayoutCustomHeaders",
+            "description": "customHeaders"
+          }
+        ]
+      },
       "groupRelationships": {
         "description": "Gets a group's relationships.",
         "tags": {
@@ -6770,6 +6879,82 @@
             "description": "The paging cursor for the previous or next page."
           }
         ]
+      },
+      "groupBans": {
+        "description": "Gets a list of group bans.",
+        "tags": {
+          "category": "Bans",
+          "endpoint": "GET /v1/groups/{groupId}/bans",
+          "example": "const { data: bans } = await ClassicGroupsApi.groupBans({ groupId: 5850082 });",
+          "exampleData": "[\n  {\n    user: {\n      hasVerifiedBadge: false,\n      userId: 1599940985,\n      username: \"TheNamelessBot\",\n      displayName: \"TheNamelessBot\",\n    },\n    actingUser: {\n      user: {\n        hasVerifiedBadge: false,\n        userId: 45348281,\n        username: \"MightyPart\",\n        displayName: \"Mighty\",\n      },\n      role: {\n        id: 38353811,\n        name: \"NamelessGuy2005 - Scriptor\",\n        rank: 255,\n      },\n    },\n    created: \"2025-05-17T17:04:15.646Z\",\n  },\n]\n",
+          "exampleRawBody": "{\n  previousPageCursor: null,\n  nextPageCursor: null,\n  data: [\n    {\n      user: {\n        hasVerifiedBadge: false,\n        userId: 1599940985,\n        username: \"TheNamelessBot\",\n        displayName: \"TheNamelessBot\",\n      },\n      actingUser: {\n        user: {\n          hasVerifiedBadge: false,\n          userId: 45348281,\n          username: \"MightyPart\",\n          displayName: \"Mighty\",\n        },\n        role: {\n          id: 38353811,\n          name: \"NamelessGuy2005 - Scriptor\",\n          rank: 255,\n        },\n      },\n      created: \"2025-05-17T17:04:15.646Z\",\n    },\n  ],\n}\n"
+        },
+        "params": [
+          {
+            "name": "groupId",
+            "type": "Identifier",
+            "description": "The id of the group to get bans for."
+          },
+          {
+            "name": "limit?",
+            "type": "number",
+            "description": "The number of results to be returned."
+          },
+          {
+            "name": "sortOrder?",
+            "type": "\"Asc\" | \"Desc\"",
+            "description": "The order that the results are sorted in."
+          },
+          {
+            "name": "cursor?",
+            "type": "string",
+            "description": "The paging cursor for the previous or next page."
+          }
+        ]
+      },
+      "banGroupMember": {
+        "description": "Bans a member from a group.",
+        "tags": {
+          "category": "Bans",
+          "endpoint": "POST /v1/groups/{groupId}/bans/{userId}",
+          "example": "const { data: banInfo } = await ClassicGroupsApi.banGroupMember({ groupId: 5850082, userId: 1599940985 });",
+          "exampleData": "{\n  user: {\n    hasVerifiedBadge: false,\n    userId: 1599940985,\n    username: \"TheNamelessBot\",\n    displayName: \"TheNamelessBot\",\n  },\n  actingUser: {\n    user: {\n      hasVerifiedBadge: false,\n      userId: 45348281,\n      username: \"MightyPart\",\n      displayName: \"Mighty\",\n    },\n    role: { id: 38353811, name: \"NamelessGuy2005 - Scriptor\", rank: 255 },\n  },\n  created: \"2025-05-17T17:04:15.646Z\",\n}\n",
+          "exampleRawBody": "{\n  user: {\n    hasVerifiedBadge: false,\n    userId: 1599940985,\n    username: \"TheNamelessBot\",\n    displayName: \"TheNamelessBot\",\n  },\n  actingUser: {\n    user: {\n      hasVerifiedBadge: false,\n      userId: 45348281,\n      username: \"MightyPart\",\n      displayName: \"Mighty\",\n    },\n    role: { id: 38353811, name: \"NamelessGuy2005 - Scriptor\", rank: 255 },\n  },\n  created: \"2025-05-17T17:04:15.646Z\",\n}\n"
+        },
+        "params": [
+          {
+            "name": "groupId",
+            "type": "Identifier",
+            "description": "The id of the group to ban a member from."
+          },
+          {
+            "name": "userId",
+            "type": "UserId",
+            "description": "The id of the member to ban."
+          }
+        ]
+      },
+      "unbanGroupMember": {
+        "description": "Unbans a member from a group.",
+        "tags": {
+          "category": "Bans",
+          "endpoint": "DELETE /v1/groups/{groupId}/bans/{userId}",
+          "example": "const { data: success } = await ClassicGroupsApi.unbanGroupMember({ groupId: 5850082, userId: 1599940985 });",
+          "exampleData": "",
+          "exampleRawBody": "{}\n"
+        },
+        "params": [
+          {
+            "name": "groupId",
+            "type": "Identifier",
+            "description": "The id of the group to unban a member from."
+          },
+          {
+            "name": "userId",
+            "type": "UserId",
+            "description": "The id of the member to unban."
+          }
+        ]
       }
     },
     "organizations": {
@@ -7185,6 +7370,80 @@
             "name": "userId",
             "type": "Identifier",
             "description": "The ID of the user to get subscriptions for."
+          }
+        ]
+      }
+    },
+    "rotatingClientService": {
+      "latestPrelude": {
+        "description": "",
+        "tags": {
+          "endpoint": "GET /v1/prelude/latest",
+          "example": "",
+          "exampleData": "",
+          "exampleRawBody": ""
+        },
+        "params": []
+      },
+      "fetchChallenge": {
+        "description": "Returns javaScript challenge code for the given challenge ID and identifier.",
+        "tags": {
+          "endpoint": "GET /v1/fetch",
+          "example": "",
+          "exampleData": "",
+          "exampleRawBody": ""
+        },
+        "params": []
+      },
+      "register": {
+        "description": "",
+        "tags": {
+          "endpoint": "POST /v1/register",
+          "example": "",
+          "exampleData": "{\n  robloxApiKeyBase64: \"LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZrd0V3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFdTBFb2RUaFVsUEF5YjAwcUhhK3REb3FkRmpPMAo4S0JlZUxaT3E5VlJ3Q0xyNUxySzdkQlRabmtaVGtVUkY4NWVVNVgwaVQyOEViOVMxdnFSaVpBYnlnPT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0t\",\n  robloxSignature: \"qqcseNR5OuxPOv+tK8ybCIvB6KqH59DxXZ34YP3E6o0j5YJtKPOgZh2pne+0hsbnWNFHUrRQUEgrMCadpLOEtA==\",\n}\n",
+          "exampleRawBody": "{\n  robloxApiKeyBase64: \"LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZrd0V3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFdTBFb2RUaFVsUEF5YjAwcUhhK3REb3FkRmpPMAo4S0JlZUxaT3E5VlJ3Q0xyNUxySzdkQlRabmtaVGtVUkY4NWVVNVgwaVQyOEViOVMxdnFSaVpBYnlnPT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0t\",\n  robloxSignature: \"qqcseNR5OuxPOv+tK8ybCIvB6KqH59DxXZ34YP3E6o0j5YJtKPOgZh2pne+0hsbnWNFHUrRQUEgrMCadpLOEtA==\",\n}\n"
+        },
+        "params": [
+          {
+            "name": "publicKey",
+            "type": "string",
+            "description": "publicKey"
+          },
+          {
+            "name": "nonce",
+            "type": "string",
+            "description": "nonce"
+          }
+        ]
+      },
+      "submit": {
+        "description": "",
+        "tags": {
+          "endpoint": "POST /v1/submit",
+          "example": "",
+          "exampleData": "",
+          "exampleRawBody": ""
+        },
+        "params": [
+          {
+            "name": "challengeId",
+            "type": "string",
+            "description": "challengeId"
+          },
+          {
+            "name": "params",
+            "type": "SubmitParams",
+            "description": "params"
+          },
+          {
+            "name": "payloadV2",
+            "type": "string",
+            "description": "payloadV2"
+          },
+          {
+            "name": "userId",
+            "type": "Identifier",
+            "description": "userId"
           }
         ]
       }
@@ -7955,6 +8214,40 @@
             "name": "requests",
             "type": "BReq[]",
             "description": "An array of BatchRequest objects."
+          }
+        ]
+      }
+    },
+    "twostepverification": {
+      "authenticatorVerify": {
+        "description": "2FA Authenticator Verify",
+        "tags": {
+          "category": "Challenges",
+          "endpoint": "POST /v1/users/{senderId}/challenges/authenticator/verify",
+          "example": "const { data: verificationToken } = await ClassicTwoStepVerification.authenticatorVerify({\n  senderId,\n  challengeId,\n  code: generate2FACode(),\n});",
+          "exampleData": "",
+          "exampleRawBody": "{ verificationToken: \"xvXfi6QL2ES02y8OrnmtGw\" }\n"
+        },
+        "params": [
+          {
+            "name": "senderId",
+            "type": "UserId",
+            "description": "The id of the user sending the request."
+          },
+          {
+            "name": "challengeId",
+            "type": "string",
+            "description": "The challenge id recieved from the api method requiring the 2FA."
+          },
+          {
+            "name": "code",
+            "type": "string",
+            "description": "The 2FA verification code."
+          },
+          {
+            "name": "actionType?",
+            "type": "\"Generic\"",
+            "description": "\"Generic\" by default"
           }
         ]
       }
