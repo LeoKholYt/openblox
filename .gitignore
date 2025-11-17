@@ -176,6 +176,9 @@ dist
 # Finder (MacOS) folder config
 .DS_Store
 
+# Bun lockfile (causes issues when installing from GitHub in non-bun environments)
+bun.lockb
+
 docs_site/
 
 /graph.png
