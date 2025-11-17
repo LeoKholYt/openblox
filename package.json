@@ -89,14 +89,14 @@
     }
   },
   "dependencies": {
+    "esbuild": "^0.25.3",
+    "globby": "^14.1.0",
     "lodash": "^4.17.21",
     "parse-roblox-errors": "^1.1.10"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.0",
     "@types/node": "^22.1.0",
-    "esbuild": "^0.25.3",
-    "globby": "^14.1.0",
     "prettier": "^3.2.5",
     "tablemark": "^3.1.0",
     "ts-arithmetic": "^0.1.1",
