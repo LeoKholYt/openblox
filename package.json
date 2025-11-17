@@ -4,13 +4,15 @@
   "type": "commonjs",
   "version": "1.0.62",
   "license": "MIT",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "bugs": {
     "url": "https://github.com/LeoKholYt/openblox/issues"
   },
   "repository": {
-    "type": "github",
-    "url": "https://github.com/LeoKholYt/openblox",
-    "directory": "main"
+    "type": "git",
+    "url": "https://github.com/LeoKholYt/openblox.git"
   },
   "keywords": [
     "Roblox",
@@ -89,14 +91,14 @@
     }
   },
   "dependencies": {
-    "esbuild": "^0.25.3",
-    "globby": "^14.1.0",
     "lodash": "^4.17.21",
     "parse-roblox-errors": "^1.1.10"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.0",
     "@types/node": "^22.1.0",
+    "esbuild": "^0.25.3",
+    "globby": "^14.1.0",
     "prettier": "^3.2.5",
     "tablemark": "^3.1.0",
     "ts-arithmetic": "^0.1.1",
@@ -115,7 +117,7 @@
     "graph:dist:circular": "madge --image graph.png --circular ./dist/**/*",
     "build": "bun run build:docs && node ./build.js && tsc --emitDeclarationOnly",
     "watch": "node ./build.js --watch",
-    "prepare": "node ./build.js"
+    "prepublishOnly": "node ./build.js && tsc --emitDeclarationOnly"
   },
   "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }
