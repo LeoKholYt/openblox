@@ -61,13 +61,16 @@ export type RawUsernamesToUsersInfoData<Username extends string> = {
     displayName: string
   }[]
 }
+
+export type UsersInfoData = {
+  hasVerifiedBadge: boolean,
+  id: number,
+  name: string,
+  displayName: string
+}
+
 export type PrettifiedUsernamesToUsersInfoData<Username extends string> = {
-  [Key in Username]: {
-    hasVerifiedBadge: boolean,
-    id: number,
-    name: string,
-    displayName: string
-  } | undefined
+  [Key in Username]: UsersInfoData | undefined
 }
 
 // POST /v1/users
