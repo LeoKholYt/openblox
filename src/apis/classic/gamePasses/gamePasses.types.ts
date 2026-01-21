@@ -31,9 +31,26 @@ type GamePassInfo<TemporalType extends ISODateTime | Date, GamePassId extends Id
   MinimumMembershipLevel: number,
 }
 
+type GamePassDetails<TemporalType extends ISODateTime | Date, GamePassId extends Identifier> = {
+  gamePassId: GamePassId,
+  name: string,
+  description: string,
+  isForSale: boolean,
+  iconAssetId: Identifier,
+  placeId: Identifier,
+  createdTimestamp: TemporalType,
+  updatedTimestamp: TemporalType,
+  priceInformation: {
+    defaultPriceInRobux: number,
+    enabledFeatures: string[]
+  }
+}
+
 export type RawGamePassInfo<GamePassId extends Identifier> = GamePassInfo<ISODateTime, GamePassId>
+export type RawGamePassDetails<GamePassId extends Identifier> = GamePassDetails<ISODateTime, GamePassId>
 
 export type PrettifiedGamePassInfo<GamePassId extends Identifier> = ObjectPrettify<ObjectKeysToCamelCase<GamePassInfo<Date, GamePassId>> & {}>
+export type PrettifiedGamePassDetails<GamePassId extends Identifier> = ObjectPrettify<GamePassDetails<Date, GamePassId>>
 // -------------------------------------------------------------------------------------------------------------------
 
 
