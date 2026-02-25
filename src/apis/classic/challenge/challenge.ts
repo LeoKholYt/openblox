@@ -11,6 +11,7 @@ const { createApiMethod } = createApiGroup({ name: "ClassicChallenge", baseUrl: 
  * @endpoint POST /v1/continue
  * 
  * @param challengeId
+ * @param challengeID
  * @param challengeMetadata 
  * @param challengeType
  * 
