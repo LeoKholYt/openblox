@@ -8,6 +8,7 @@ export type ChallengeMetadata = {
   rememberDevice?: boolean;
   userId?: Identifier;
   verificationToken?: string;
+  browserTrackerId?: Identifier;
 };
 
 export type RawChallengeMetadataBase = {
