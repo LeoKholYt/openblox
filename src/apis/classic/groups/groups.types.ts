@@ -456,6 +456,12 @@ export type GroupPayoutChallengeMetadata = RawChallengeMetadataBase & {
   bodyTranslationKey?: string
 }
 
+export type RawGroupPayoutResp = ObjectPrettify<{
+  status: 0 | 1
+}>
+
+export type PrettifiedGroupPayoutResp = 0 | 1
+
 // GET /v1/groups/{groupId}/join-requests ----------------------------------------------------------------------------
 export type RawGroupJoinRequestForUser<UserId extends Identifier> = GroupJoinRequest<UserId, ISODateTime> | {}
 

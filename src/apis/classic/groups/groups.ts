@@ -9,7 +9,7 @@ import { readFile } from "../../../file"
 import type { Identifier, UnionToArray, ArrayNonEmptyIfConst } from "typeforge"
 
 import type { ApiMethod } from "../../apiGroup"
-import type { AddGroupSocialLinkData, AuthenticatedUserGroupMembershipInfoData, BanGroupMemberData, FormattedAllGroupRolesForUserData_V1, GroupAuditLogActionType, GroupPayoutCustomHeaders, GroupPayoutRestrictionsInfoData, GroupRelationshipType, GroupRolePermissions, GroupRolePermissionsData, GroupsConfigMetadataData, GroupSettingsData, GroupsMetadataData, NewSocialLinkRequest, PrettifiedAllGroupRolesForUserData_V2, PrettifiedAllRolesForGroupData, PrettifiedAuthenticatedUserPendingGroupsData, PrettifiedGroupAuditLogsData, PrettifiedGroupBansData, PrettifiedGroupIdsToGroupsInfoData, PrettifiedGroupInfoData, PrettifiedGroupJoinRequestForUser, PrettifiedGroupJoinRequests, PrettifiedGroupLookupSearch, PrettifiedGroupMembersData, PrettifiedGroupMembersWithRoleData, PrettifiedGroupNameHistoryData, PrettifiedGroupPayoutsInfoData, PrettifiedGroupPermissionsForAllRoles, PrettifiedGroupPolicyInfoData, PrettifiedGroupRelationshipsData, PrettifiedGroupRolesFromIdsData, PrettifiedGroupSearchData, PrettifiedGroupSearchMetadata, PrettifiedGroupShoutData, PrettifiedGroupSocialLinksData, PrettifiedGroupsThatUsersFriendsAreInData, PrettifiedGroupWallPostsData_V1, PrettifiedGroupWallPostsData_V2, PrettifiedPrimaryGroupForUserData, RawAllGroupRolesForUserData_V1, RawAllGroupRolesForUserData_V2, RawAllRolesForGroupData, RawAuthenticatedUserPendingGroupsData, RawGroupAuditLogsData, RawGroupBansData, RawGroupIdsToGroupsInfoData, RawGroupInfoData, RawGroupJoinRequestForUser, RawGroupJoinRequests, RawGroupLookupSearch, RawGroupMembersData, RawGroupMembersWithRoleData, RawGroupNameHistoryData, RawGroupPayoutsInfoData, RawGroupPermissionsForAllRoles, RawGroupPolicyInfoData, RawGroupRelationshipsData, RawGroupRolesFromIdsData, RawGroupSearchData, RawGroupSearchMetadata, RawGroupShoutData, RawGroupSocialLinksData, RawGroupsThatUsersFriendsAreInData, RawGroupWallPostsData_V1, RawGroupWallPostsData_V2, RawPrimaryGroupForUserData, UpdateRoleSetData, UpdateRoleSetRequest } from "./groups.types"
+import type { AddGroupSocialLinkData, AuthenticatedUserGroupMembershipInfoData, BanGroupMemberData, FormattedAllGroupRolesForUserData_V1, GroupAuditLogActionType, GroupPayoutCustomHeaders, GroupPayoutRestrictionsInfoData, GroupRelationshipType, GroupRolePermissions, GroupRolePermissionsData, GroupsConfigMetadataData, GroupSettingsData, GroupsMetadataData, NewSocialLinkRequest, PrettifiedAllGroupRolesForUserData_V2, PrettifiedAllRolesForGroupData, PrettifiedAuthenticatedUserPendingGroupsData, PrettifiedGroupAuditLogsData, PrettifiedGroupBansData, PrettifiedGroupIdsToGroupsInfoData, PrettifiedGroupInfoData, PrettifiedGroupJoinRequestForUser, PrettifiedGroupJoinRequests, PrettifiedGroupLookupSearch, PrettifiedGroupMembersData, PrettifiedGroupMembersWithRoleData, PrettifiedGroupNameHistoryData, PrettifiedGroupPayoutResp, PrettifiedGroupPayoutsInfoData, PrettifiedGroupPermissionsForAllRoles, PrettifiedGroupPolicyInfoData, PrettifiedGroupRelationshipsData, PrettifiedGroupRolesFromIdsData, PrettifiedGroupSearchData, PrettifiedGroupSearchMetadata, PrettifiedGroupShoutData, PrettifiedGroupSocialLinksData, PrettifiedGroupsThatUsersFriendsAreInData, PrettifiedGroupWallPostsData_V1, PrettifiedGroupWallPostsData_V2, PrettifiedPrimaryGroupForUserData, RawAllGroupRolesForUserData_V1, RawAllGroupRolesForUserData_V2, RawAllRolesForGroupData, RawAuthenticatedUserPendingGroupsData, RawGroupAuditLogsData, RawGroupBansData, RawGroupIdsToGroupsInfoData, RawGroupInfoData, RawGroupJoinRequestForUser, RawGroupJoinRequests, RawGroupLookupSearch, RawGroupMembersData, RawGroupMembersWithRoleData, RawGroupNameHistoryData, RawGroupPayoutResp, RawGroupPayoutsInfoData, RawGroupPermissionsForAllRoles, RawGroupPolicyInfoData, RawGroupRelationshipsData, RawGroupRolesFromIdsData, RawGroupSearchData, RawGroupSearchMetadata, RawGroupShoutData, RawGroupSocialLinksData, RawGroupsThatUsersFriendsAreInData, RawGroupWallPostsData_V1, RawGroupWallPostsData_V2, RawPrimaryGroupForUserData, UpdateRoleSetData, UpdateRoleSetRequest } from "./groups.types"
 import type { SortOrder } from "../../../utils/utils.types"
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -813,18 +813,23 @@ export const groupPayoutsInfo = createApiMethod(async (
  * @exampleRawBody {}
  */
 export const groupPayout = createApiMethod(async <UserId extends Identifier>(
-  { groupId, recipients, payoutType = "FixedAmount", customHeaders }: { 
+  { groupId, recipients, payoutType = "FixedAmount", watermarkContributions, customHeaders }: { 
     groupId: Identifier,
     recipients: ArrayNonEmptyIfConst<{ recipientId: UserId, recipientType: "User", amount: number }>,
     payoutType?: "FixedAmount" | "Percentage",
+    watermarkContributions?: {
+      balanceKey: number,
+      amount: number
+    }[],
     customHeaders?: GroupPayoutCustomHeaders
   }
-): ApiMethod<{}, boolean> => ({
+): ApiMethod<RawGroupPayoutResp, PrettifiedGroupPayoutResp> => ({
   method: "POST",
   path: `/v1/groups/${groupId}/payouts`,
   body: { 
-    PayoutType: payoutType,
-    Recipients: recipients
+    PayoutType: payoutType == "FixedAmount" ? 1 : 2,
+    Recipients: recipients,
+    WatermarkContributions: watermarkContributions
   },
   headers: customHeaders ? {
     ...customHeaders,
@@ -835,7 +840,7 @@ export const groupPayout = createApiMethod(async <UserId extends Identifier>(
   } : undefined,
   name: "groupPayout",
   
-  formatRawDataFn: (rawData) => dataIsSuccess(rawData),
+  formatRawDataFn: (rawData) => rawData.status,
 }))
 //////////////////////////////////////////////////////////////////////////////////
 

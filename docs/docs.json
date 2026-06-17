@@ -3339,9 +3339,14 @@
         },
         "params": [
           {
-            "name": "challengeId",
+            "name": "challengeId?",
             "type": "string",
             "description": "challengeId"
+          },
+          {
+            "name": "challengeID?",
+            "type": "string",
+            "description": "challengeID"
           },
           {
             "name": "challengeMetadata",
@@ -4831,6 +4836,22 @@
           "example": "const { data: gamePassInfo } = await ClassicGamePassesApi.gamePassInfo({ gamePassId: 9260480 });",
           "exampleData": "",
           "exampleRawBody": "{\n  TargetId: 9260480,\n  ProductType: \"Game Pass\",\n  AssetId: 0,\n  ProductId: 979386303,\n  Name: \"Donate\",\n  Description: \"null\",\n  AssetTypeId: 0,\n  Creator: {\n    Id: 1536374574,\n    Name: \"MightyPart Games\",\n    CreatorType: \"Group\",\n    CreatorTargetId: 5850082,\n  },\n  IconImageAssetId: 5316458121,\n  Created: \"2020-05-01T15:05:21.543Z\",\n  Updated: \"2020-07-09T13:08:21.133Z\",\n  PriceInRobux: 15,\n  PriceInTickets: null,\n  Sales: 6,\n  IsNew: false,\n  IsForSale: true,\n  IsPublicDomain: false,\n  IsLimited: false,\n  IsLimitedUnique: false,\n  Remaining: null,\n  MinimumMembershipLevel: 0,\n}\n"
+        },
+        "params": [
+          {
+            "name": "gamePassId",
+            "type": "GamePassId",
+            "description": "The ID of the game pass to get information about."
+          }
+        ]
+      },
+      "gamePassDetails": {
+        "description": "Gets details about a game pass.",
+        "tags": {
+          "endpoint": "GET /v1/game-passes/{gamePassId}/details",
+          "example": "const { data: gamePassDetails } = await ClassicGamePassesApi.gamePassDetails({ gamePassId: 9260480 });",
+          "exampleData": "",
+          "exampleRawBody": "{\n  gamePassId: 115278177,\n  name: \"Tiger\",\n  description: \"\",\n  isForSale: true,\n  iconAssetId: 13924641430,\n  placeId: 11934450703,\n  createdTimestamp: \"2022-12-27T21:11:04.35Z\",\n  updatedTimestamp: \"2023-07-01T18:59:56.753Z\",\n  priceInformation: { defaultPriceInRobux: 25, enabledFeatures: [] },\n}\n"
         },
         "params": [
           {
